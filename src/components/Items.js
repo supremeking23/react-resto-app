@@ -1,6 +1,7 @@
 import React from "react";
 import ItemBox from "./ItemBox";
 import AddItemForm from "./AddItemForm";
+import EditItemForm from "./EditItemForm";
 
 // import DataBinding from "./DataBinding";
 import CartItem from "./CartItem";
@@ -61,7 +62,8 @@ class Items extends React.Component {
 		// dapat may quantity sa object
 		cart: [],
 		totalInCart: 0,
-
+		isEdit: false,
+		itemToEdit: {},
 		filter: "All",
 	};
 
@@ -114,6 +116,28 @@ class Items extends React.Component {
 		});
 	};
 
+	editItem = (item) => {
+		// alert(item.name);
+		this.setState({
+			itemToEdit: item,
+			isEdit: true,
+		});
+	};
+
+	editItemAction = (editItem) => {
+		let findItemToEdit = this.state.items.findIndex((item) => item.id === editItem.id);
+
+		let itemCopy = [...this.state.items];
+
+		itemCopy[findItemToEdit].name = editItem.name;
+
+		this.setState({
+			itemToEdit: {},
+			isEdit: false,
+			items: itemCopy,
+		});
+	};
+
 	render() {
 		// let totalInCart = this.state.cart.map((item) => {
 		// 	let total = 0;
@@ -126,7 +150,11 @@ class Items extends React.Component {
 			<>
 				<div className="container mt-5">
 					<div className="row">
-						<AddItemForm addItem={this.addItem} />
+						{this.state.isEdit ? (
+							<EditItemForm itemTodEdit={this.state.itemToEdit} editItemAction={this.editItemAction} />
+						) : (
+							<AddItemForm addItem={this.addItem} />
+						)}
 					</div>
 
 					{/* <DataBinding /> */}
@@ -160,7 +188,7 @@ class Items extends React.Component {
 					</div>
 					<div className="row">
 						{items.map((item) => (
-							<ItemBox item={item} key={item.id} addItemToCart={this.addItemToCart} />
+							<ItemBox item={item} key={item.id} addItemToCart={this.addItemToCart} editItem={this.editItem} />
 						))}
 					</div>
 

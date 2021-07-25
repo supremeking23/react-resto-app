@@ -13,6 +13,10 @@ class ItemBox extends React.Component {
 		this.props.addItemToCart(item);
 	};
 
+	edit = (data) => {
+		this.props.editItem(data);
+	};
+
 	render() {
 		let { name, image, price, category } = this.props.item;
 		return (
@@ -30,7 +34,7 @@ class ItemBox extends React.Component {
 								<button type="button" className="btn btn-order" onClick={() => this.order(this.props.item)}>
 									Order
 								</button>
-								<button type="button" className="btn btn-info mt-1" onClick={() => this.order(this.props.item)}>
+								<button type="button" className="btn btn-info mt-1" onClick={() => this.edit(this.props.item)}>
 									Edit
 								</button>
 							</div>
